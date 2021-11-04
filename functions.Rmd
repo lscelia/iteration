@@ -3,18 +3,54 @@ title: "Writing Functions"
 output: html_document
 ---
 
+```{r}
+library(tidyverse)
+library(rvest)
+```
 
 
+## Z scores
+```{r}
+x_vec = rnorm(25, mean = 5, sd = 3)
+(x_vec - mean(x_vec)) / sd(x_vec)
+
+#as a function
+z_scores = function(x) {
+  z = (x - mean(x)) / sd(x)
+  return(z)
+}
+
+#call function
+z_scores(x = x_vec)
+
+#another example
+y_vec = rnorm(40, mean = 12, sd = .3)
+z_scores(y_vec)
+```
 
 
+How great is this?
+Only kinda great --> gives error is no numerical input
 
+```{r}
+z_scores = function(x){
+  if (!is.numeric(x)) {
+    stop("x needs to be numeric")
+  }
+  if (length(x) < 3 ) {
+    stop("x should have at least 3 numbers")
+  }
+  
+  z = (x - mean(x)) / sd(x)
+  return(z)
+}
+```
 
-
-
-
-
-
-
-
+```{r, error = TRUE}
+z_scores(3)
+z_scores(c("My", "name", "is"))
+z_scores(mtcars)
+z_scores(y_vec)
+```
 
 
