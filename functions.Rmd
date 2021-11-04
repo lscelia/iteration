@@ -1,6 +1,6 @@
 ---
 title: "Writing Functions"
-output: html_document
+output: github_document
 ---
 
 ```{r}
@@ -128,4 +128,91 @@ sim_mean_sd(n = 30, sigma = 3, mu = 4)
 #in the argument, set mu = 4, sigma = 3 by default
 #sim_mean_sd(30)
 ```
+
+
+## Naopleon Daytime
+```{r}
+url = "https://www.amazon.com/product-reviews/B00005JNBQ/ref=cm_cr_arp_d_viewopt_rvwer?ie=UTF8&reviewerType=avp_only_reviews&sortBy=recent&pageNumber=1"
+
+dynamite_html = read_html(url)
+
+review_titles = 
+  dynamite_html %>%
+  html_elements(".a-text-bold span") %>%
+  html_text()
+
+review_stars = 
+  dynamite_html %>%
+  html_elements("#cm_cr-review_list .review-rating") %>%
+  html_text()
+
+review_text = 
+  dynamite_html %>%
+  html_elements(".review-text-content span") %>%
+  html_text()
+
+reviews = tibble(
+  title = review_titles,
+  stars = review_stars,
+  text = review_text
+)
+
+```
+
+
+Okay but there are a lot of pages of reviews...
+Write a function that gets reviews based on page url
+
+```{r}
+get_page_revivews = function(page_url) {
+  
+  page_html = read_html(page_url)
+
+  review_titles = 
+    page_html %>%
+    html_elements(".a-text-bold span") %>%
+    html_text()
+  
+  review_stars = 
+    page_html %>%
+    html_elements("#cm_cr-review_list .review-rating") %>%
+    html_text()
+  
+  review_text = 
+    page_html %>%
+    html_elements(".review-text-content span") %>%
+    html_text()
+  
+  reviews = 
+    tibble(
+    title = review_titles,
+    stars = review_stars,
+    text = review_text
+    )
+  
+  return(reviews)
+}
+
+base_url = "https://www.amazon.com/product-reviews/B00005JNBQ/ref=cm_cr_arp_d_viewopt_rvwer?ie=UTF8&reviewerType=avp_only_reviews&sortBy=recent&pageNumber="
+
+urls = str_c(base_url, 1:5)
+
+bind_rows(
+  get_page_revivews(urls[1]),
+  get_page_revivews(urls[2]),
+  get_page_revivews(urls[3]),
+  get_page_revivews(urls[4]),
+  get_page_revivews(urls[5])
+)
+```
+
+
+
+
+
+
+
+
+
+
 
