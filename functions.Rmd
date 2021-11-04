@@ -54,3 +54,78 @@ z_scores(y_vec)
 ```
 
 
+## Multiple Outputs
+```{r}
+mean_and_sd = function(x) {
+  
+  if (!is.numeric(x)) {
+    stop("Argument x should be numeric")
+  } else if (length(x) < 3) {
+    stop("x should have at least 3 numbers")
+  }
+  
+  mean_x = mean(x)
+  sd_x = sd(x)
+
+  output_df = 
+    tibble(
+      mean = mean_x,
+      sd = sd_x
+  )
+  
+  return(output_df)
+
+}
+
+mean_and_sd(y_vec)
+#x = y_vec
+#mean_and_sd(x)
+#the function may not works
+#try rm(x) to make sure the code still works
+```
+
+
+## Different sampjle sizes, means, sds
+```{r}
+sim_data = 
+  tibble(
+    x = rnorm(30, mean = 2, sd = 3)
+  )
+
+sim_data %>% 
+  summarize(
+    mean = mean(x),
+    sd = sd(x)
+  )
+```
+
+Let's write a function that simulates data, computes the mean and sd
+```{r}
+sim_mean_sd = function(n, mu, sigma) {
+  
+  # do checks on inputs
+  # shift + option + select lines ==> tab multiple lines
+  
+  sim_data = 
+    tibble(
+      x = rnorm(n, mean = mu, sd = sigma)
+    )
+
+  sim_data %>% 
+    summarize(
+      mean = mean(x),
+      sd = sd(x)
+    )
+}
+
+
+#positional matching
+sim_mean_sd(30, 4, 3)
+
+#name by hand
+sim_mean_sd(n = 30, sigma = 3, mu = 4)
+
+#in the argument, set mu = 4, sigma = 3 by default
+#sim_mean_sd(30)
+```
+
