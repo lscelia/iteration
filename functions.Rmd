@@ -78,6 +78,8 @@ mean_and_sd = function(x) {
 }
 
 mean_and_sd(y_vec)
+
+#scoping
 #x = y_vec
 #mean_and_sd(x)
 #the function may not works
@@ -207,6 +209,18 @@ bind_rows(
 ```
 
 
+## Scoping
+```{r}
+f = function(x) {
+  z = x + y
+  z
+}
+
+x = 1
+y = 2
+
+f(x = y)
+```
 
 
 
